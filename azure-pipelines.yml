@@ -23,6 +23,6 @@ steps:
       SEMGREP_PR_ID: $(System.PullRequest.PullRequestNumber)
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: $(System.DefaultWorkingDirectory)/scan-results/semgrep.sarif
+    PathtoPublish: $(System.DefaultWorkingDirectory)/scan-results
     ArtifactName: 'scan-results'
     publishLocation: 'Container'
