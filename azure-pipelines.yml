@@ -1,0 +1,28 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+variables:
+- group: Semgrep app token group
+
+steps:
+
+
+
+- script: |
+      python -m pip install --upgrade pip
+      pip install semgrep
+      semgrep ci --sarif --output=semgrep.sarif
+  env:
+      SEMGREP_PR_ID: $(System.PullRequest.PullRequestNumber)
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'scan-results'
+    publishLocation: 'pipeline'
