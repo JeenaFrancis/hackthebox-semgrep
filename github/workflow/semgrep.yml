@@ -1,0 +1,28 @@
+# Name of this GitHub Actions workflow.
+name: Semgrep
+on: push
+
+jobs:
+  semgrep:
+    # User definable name of this GitHub Actions job.
+    name: Scan
+    # If you are self-hosting, change the following `runs-on` value: 
+    runs-on: ubuntu-latest
+
+    container:
+      # A Docker image with Semgrep installed. Do not change this.
+      image: returntocorp/semgrep
+
+
+    steps:
+      - uses: actions/checkout@v2.6.0
+      # Run the "semgrep ci" command on the command line of the docker image.
+      - name: Run SAST scan using Semgrep
+        run: semgrep ci --sarif --output=semgrep.sarif
+        continue-on-error: true
+
+        env:
+          # Connect to Semgrep App through your SEMGREP_APP_TOKEN.
+          # Generate a token from Semgrep App > Settings
+          # and add it to your GitHub secrets.
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
